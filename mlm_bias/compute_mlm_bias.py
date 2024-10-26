@@ -27,7 +27,11 @@ class BiasMLM():
         self.results = BiasResults()
         self.dataset = dataset
         self.model_name = model_name
-        self.model = AutoModelForMaskedLM.from_pretrained(self.model_name, output_hidden_states=True, output_attentions=True)
+        self.model = AutoModelForMaskedLM.from_pretrained(
+            self.model_name,
+            output_hidden_states=True,
+            output_attentions=True,
+            attn_implementation="eager")
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
         self.mask_id = self.tokenizer.mask_token_id
         self.device = None

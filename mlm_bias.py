@@ -10,17 +10,24 @@ from mlm_bias import (
     RelativeBiasMLMs
 )
 
-def pretty_print(res, out, m_name, sep="\n"):
+def pretty_print(res, out, m_name, sep="\n", total_only=False):
     out += ('-'*50)
     out += sep
     out += (f"MLM: {m_name}")
     out += sep
-    for measure in res['bias_scores'].keys():
-        out += (f"Measure = {measure.replace('d','Δ').upper()}")
-        out += sep
-        for bias_type, score in res['bias_scores'][measure].items():
-            out += (f"- {bias_type} = {round(score,3)}")
-            out += sep
+    if total_only:
+        for measure in res['bias_scores'].keys():
+            out += (f"{measure.replace('d','Δ').upper()} "+
+                    f"total = {round(res['bias_scores'][measure]['total'],3)}\n")
+        if len(out) >= 2 and "\n" in out[-2:]:
+            out = out[:-2]
+    else:
+      for measure in res['bias_scores'].keys():
+          out += (f"Measure = {measure.replace('d','Δ').upper()}")
+          out += sep
+          for bias_type, score in res['bias_scores'][measure].items():
+              out += (f"- {bias_type} = {round(score,3)}")
+              out += sep
     return out
 
 if __name__ == '__main__':
@@ -61,13 +68,13 @@ if __name__ == '__main__':
                         help='Measures computed to evaluate bias in MLMs.',
                         choices=['all','crr','crra','dp','dpa','aul','aula','csps','sss'])
 
-    parser.add_argument('--s',
+    parser.add_argument('--start',
                         type=int,
                         required=False,
                         default=-1,
                         help='Start index of dataset sample.')
 
-    parser.add_argument('--e',
+    parser.add_argument('--end',
                         type=int,
                         required=False,
                         default=-1,
@@ -75,24 +82,36 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    outDirExists = os.path.exists(os.path.dirname(args.output))
-    if not outDirExists:
-        os.makedirs(os.path.dirname(args.output))
-        print("Created output directory.")
+    try:
+        outDirExists = os.path.exists(os.path.dirname(args.output))
+        if not outDirExists:
+            os.makedirs(os.path.dirname(args.output))
+            print("Created output directory.")
+    except Exception as ex:
+        raise Exception(f"Could not create output directory {args.output}\n{ex}")
+    try:
+        if args.data == 'custom':
+            dataset = BiasLineByLineDataset(args.data)
+        else:
+            dataset = BiasBenchmarkDataset(args.data)
+    except Exception as ex:
+        raise Exception(f"Could not load dataset {args.data}\n{ex}")
+    if args.start != -1 and args.start < 0:
+        raise argparse.ArgumentTypeError(f"{args.start} is not a positive integer")
+    if args.end != -1 and (args.end < 0 or args.end <= args.start):
+        raise argparse.ArgumentTypeError(f"{args.end} is not a valid positive integer greater than {args.start}")
 
-    if args.data == 'custom':
-        dataset = BiasLineByLineDataset(args.data)
-    else:
-        dataset = BiasBenchmarkDataset(args.data)
-
-    if args.s != -1 and args.e != -1:
-        dataset.sample(indices=list(range(args.s, args.e)))
+    if args.start != -1 and args.end != -1:
+        dataset.sample(indices=list(range(args.start, args.end)))
 
     output_dir = os.path.dirname(args.output)
 
     out = ""
     model = args.model
-    model_bias = BiasMLM(args.model, dataset)
+    try:
+        model_bias = BiasMLM(args.model, dataset)
+    except Exception as ex:
+        raise Exception(f"Could not load {args.model}\n{ex}")
     if args.measures == 'all':
         res1 = model_bias.evaluate(inc_attention=True)
     else:
@@ -127,3 +146,6 @@ if __name__ == '__main__':
         f.write(out)
 
     print(f"Saved scores in {args.output}")
+
+    console_out = pretty_print(res1, "", m_name=res1['model_name'], total_only=True)
+    print(console_out)

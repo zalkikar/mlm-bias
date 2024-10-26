@@ -23,17 +23,11 @@ Measures that are computed with a single encoded input (see citations in [Refere
 `pip install mlm-bias`
 
 ```python
-import os
-from mlm_bias import (
-    BiasBenchmarkDataset,
-    BiasLineByLineDataset,
-    BiasMLM,
-    RelativeBiasMLMs
-)
-cps_dataset = BiasBenchmarkDataset("cps")
+import mlm_bias
+cps_dataset = mlm_bias.BiasBenchmarkDataset("cps")
 cps_dataset.sample(indices=list(range(10)))
 model = "bert-base-uncased"
-mlm_bias = BiasMLM(model, cps_dataset)
+mlm_bias = mlm_bias.BiasMLM(model, cps_dataset)
 result = mlm_bias.evaluate(inc_attention=True)
 result.save("./bert-base-uncased")
 ```
@@ -49,15 +43,15 @@ python3 -m pip install .
 
 Using the `mlm_bias.py` example script:
 ```bash
-mlm_bias.py [-h] --data {cps,ss,custom} --model MODEL [--model2 MODEL2] [--output OUTPUT] [--measures {all,crr,crra,dp,dpa,aul,aula,csps,sss}] [--s S] [--e E]
+mlm_bias.py [-h] --data {cps,ss,custom} --model MODEL [--model2 MODEL2] [--output OUTPUT] [--measures {all,crr,crra,dp,dpa,aul,aula,csps,sss}] [--start S] [--end E]
 ```
 
 ```bash
 # single mlm
-python3 mlm_bias.py --data cps --model roberta-base --s 0 --e 30
-python3 mlm_bias.py --data ss --model bert-base-uncased --s 0 --e 30
+python3 mlm_bias.py --data cps --model roberta-base --start 0 --end 30
+python3 mlm_bias.py --data ss --model bert-base-uncased --start 0 --end 30
 # relative
-python3 mlm_bias.py --data cps --model roberta-base --s 0 --e 30 --model2 bert-base-uncased
+python3 mlm_bias.py --data cps --model roberta-base --start 0 --end 30 --model2 bert-base-uncased
 ```
 
 With default arguments:
@@ -73,11 +67,22 @@ Loaded Data [CrowSPairs] |██████████████████
 Evaluating Bias [roberta-base] |██████████████████████████████| 30/30 [100%] in 2m 46s ETA: 0s
 Saved bias results for roberta-base in ./eval/roberta-base
 Saved scores in ./eval/out.txt
+--------------------------------------------------
+MLM: roberta-base
+CRR total = 50.0
+CRRA total = 53.333
+ΔP total = 56.667
+ΔPA total = 56.667
+AUL total = 76.667
+AULA total = 70.0
+SSS total = 53.333
+CSPS total = 63.33
 ```
 
 ## Citation
 
 If using this for research, please cite the following:
+
 ```
 @misc{zalkikar-chandra-2024,
     author  = {Rahul Zalkikar and Kanchan Chandra},
@@ -88,11 +93,13 @@ If using this for research, please cite the following:
 
 ## References
 
+```
 @misc{zalkikar-chandra-2024,
     author  = {Rahul Zalkikar and Kanchan Chandra},
     title   = {Measuring Social Biases in Masked Language Models by Proxy of Prediction Quality},
     year    = {2024}
 }
+```
 
 ```
 @InProceedings{Kaneko:AUL:2022,
