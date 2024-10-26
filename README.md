@@ -8,7 +8,7 @@ Bias scores for an MLM are computed based on implemented measures for sentence p
 
 Measures computed using an iterative masking experiment, where an MLM masks one token at a time until all tokens are masked once (so we have `n` logits or predictions for a sentence with `n` tokens) are reported below (see current citation in [Citation](#citation)). As a result these measures take longer to compute. Measures are defined to represent MLM preference (or prediction quality). Bias against disadvantaged groups for a sentence pair is represented by a higher relative measure value for a sentence in `adv` compared to `dis`.
 - `CRR` (Difference in reciprocal rank of a predicted token (always equal to 1) and the reciprocal rank of a masked token
-- `CRRA` with Attention weights (`CRR` with Attention weights)
+- `CRRA` (`CRR` with Attention weights)
 - &Delta;`P` (Difference in log-liklihood of a predicted token and the masked token)
 - &Delta;`PA` (&Delta;`P` with Attention weights)
 
