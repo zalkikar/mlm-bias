@@ -94,14 +94,6 @@ If using this for research, please cite the following:
 ## References
 
 ```
-@misc{zalkikar-chandra-2024,
-    author  = {Rahul Zalkikar and Kanchan Chandra},
-    title   = {Measuring Social Biases in Masked Language Models by Proxy of Prediction Quality},
-    year    = {2024}
-}
-```
-
-```
 @InProceedings{Kaneko:AUL:2022,
   author={Masahiro Kaneko and Danushka Bollegala},
   title={Unmasking the Mask -- Evaluating Social Biases in Masked Language Models},
