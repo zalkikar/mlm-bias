@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: If you use this software, please cite both the software and corresponding paper.
+authors:
+  - family-names: Zalkikar
+    given-names: Rahul
+title: mlm-bias
+version: 0.1.5
+url: https://github.com/zalkikar/mlm-bias
+preferred-citation:
+  authors:
+    - family-names: Zalkikar
+      given-names: Rahul
+    - family-names: Chandra
+      given-names: Kanchan
+  title: Measuring Social Biases in Masked Language Models by Proxy of Prediction Quality
+  year: 2024
+  version: 2.0
+  doi: 10.48550/arXiv.2402.13954
+  url: https://arxiv.org/abs/2402.13954
+  arxiv: 2402.13954
+  eprint: 2402.13954
+  primary-class: cs.CL
