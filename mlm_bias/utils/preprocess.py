@@ -57,9 +57,6 @@ def preprocess_linebyline(data_dir):
     if not os.access(data_dir, os.R_OK):
         raise Exception("Can't Access Dataset")
     else:
-        bias_types_path = os.path.join(data_dir, "bias_types.txt")
-        dis_path = os.path.join(data_dir, "dis.txt")
-        adv_path = os.path.join(data_dir, "adv.txt")
         with open(os.path.join(data_dir, "bias_types.txt"), "r") as f:
             bias_types = f.read().splitlines()
             f.close()

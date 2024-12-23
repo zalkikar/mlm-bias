@@ -54,8 +54,8 @@ class RelativeBiasMLMs():
                 mdifs = [((m21 - m11) - (m22 - m21)) for m22, m21, m12, m11 in zip(m2_s2, m2_s1, m1_s2, m1_s1)]
                 self.bias_scores[m][b] = 100 * np.mean([1 if mdif > 0 else 0 for mdif in mdifs])
         self.results(
-            self.mlm1_bias_results["model_name"],
-            self.mlm2_bias_results["model_name"],
+            self.mlm1_bias_results["model_name_or_path"],
+            self.mlm2_bias_results["model_name_or_path"],
             measures,
             self.bias_scores
         )

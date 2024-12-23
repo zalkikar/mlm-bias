@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from typing import Optional
-from mlm_bias.utils.preprocess import preprocess_benchmark, preprocess_linebyline
+from mlm_bias.utils import preprocess_benchmark, preprocess_linebyline
 
 class BiasDataset():
     def __init__(self, bias_types: list, dis: list, adv: list):

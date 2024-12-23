@@ -6,19 +6,19 @@ from typing import Optional
 
 class BiasResults():
 
-    model_name = None
+    model_name_or_path = None
     measures = None
     eval_results = None
     bias_scores = None
 
     def __call__(
         self,
-        model_name: str,
+        model_name_or_path: str,
         measures: list,
         eval_results: dict,
         bias_scores: dict,
     ):
-        self.model_name = model_name
+        self.model_name_or_path = model_name_or_path
         self.measures = measures
         self.eval_results = eval_results
         self.bias_scores = bias_scores
@@ -28,7 +28,7 @@ class BiasResults():
 
     def save(self, file_path: Optional[str] = None):
         if file_path is None:
-            fp = f'{self.model_name}.bias'
+            fp = f'{self.model_name_or_path}.bias'
         else:
             fp = file_path
         with open(fp, 'wb') as f:
@@ -37,13 +37,13 @@ class BiasResults():
 
     def load(self, file_path: Optional[str] = None):
         if file_path is None:
-            fp = f'{self.model_name}.bias'
+            fp = f'{self.model_name_or_path}.bias'
         else:
             fp = file_path
         with open(fp, 'rb') as f:
             data = pickle.load(f)
             f.close()
-        self.model_name = data['model_name']
+        self.model_name_or_path = data['model_name_or_path']
         self.measures = data['measures']
         self.eval_results = data['eval_results']
         self.bias_scores = data['bias_scores']

@@ -5,13 +5,21 @@ import time
 import torch
 import numpy as np
 from typing import Optional
-from transformers import AutoTokenizer, AutoModelForMaskedLM
+from transformers import AutoConfig, AutoModelForMaskedLM, AutoTokenizer
 from mlm_bias.bias_datasets import BiasDataset
 from mlm_bias.bias_results import BiasResults
-from mlm_bias.utils.experiments import get_mask_combinations, get_span
-from mlm_bias.utils.measures import compute_sss, compute_csps, compute_aul, compute_crr_dp
-from mlm_bias.utils.constants import SUPPORTED_MEASURES, SUPPORTED_MEASURES_ATTENTION
-from mlm_bias.utils.progress import show_progress, end_progress
+from mlm_bias.utils import (
+    compute_aul,
+    compute_crr_dp,
+    compute_csps,
+    compute_sss,
+    end_progress,
+    get_mask_combinations,
+    get_span,
+    show_progress,
+    SUPPORTED_MEASURES,
+    SUPPORTED_MEASURES_ATTENTION
+)
 
 class BiasMLM():
     """
@@ -20,19 +28,20 @@ class BiasMLM():
 
     def __init__(
         self,
-        model_name: str,
+        model_name_or_path: str,
         dataset: BiasDataset,
         device: Optional[str] = None,
     ):
         self.results = BiasResults()
         self.dataset = dataset
-        self.model_name = model_name
-        self.model = AutoModelForMaskedLM.from_pretrained(
-            self.model_name,
+        self.model_name_or_path = model_name_or_path
+        self.model_config = AutoConfig.from_pretrained(
+            pretrained_model_name_or_path=self.model_name_or_path,
             output_hidden_states=True,
             output_attentions=True,
             attn_implementation="eager")
-        self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
+        self.model = AutoModelForMaskedLM.from_config(self.model_config)
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model_name_or_path)
         self.mask_id = self.tokenizer.mask_token_id
         self.device = None
         if device is not None:
@@ -119,7 +128,7 @@ class BiasMLM():
 
         start_time = time.time()
         for index in range(len(self.dataset)):
-            show_progress(index, len(self.dataset), f"Evaluating Bias [{self.model_name}]", start_time)
+            show_progress(index, len(self.dataset), f"Evaluating Bias [{self.model_name_or_path}]", start_time)
             bias_type, s1, s2 = self.dataset[index]
             self.eval_results["bias_types"].append(bias_type)
             if 'crr' in measures or 'dp' in measures:
@@ -175,12 +184,12 @@ class BiasMLM():
                     mj_adv = compute_sss(self.model, token_ids_adv, adv_spans, self.mask_id, log_softmax=True)
                     self.eval_results[f'S1']['sss'].append(mj_dis['sss'])
                     self.eval_results[f'S2']['sss'].append(mj_adv['sss'])
-        show_progress(index+1, len(self.dataset), f"Evaluating Bias [{self.model_name}]", start_time)
+        show_progress(index+1, len(self.dataset), f"Evaluating Bias [{self.model_name_or_path}]", start_time)
         end_progress()
         self.measures = measures
         self.scores()
         self.results(
-            self.model_name,
+            self.model_name_or_path,
             self.measures,
             self.eval_results,
             self.bias_scores

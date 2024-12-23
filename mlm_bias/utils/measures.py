@@ -6,7 +6,7 @@ import numpy as np
 
 def get_mlm_output(model, inputs):
     with torch.no_grad():
-        output = model(inputs)
+        output = model(inputs, return_dict=True)
     return output
 
 @torch.no_grad()
@@ -34,17 +34,12 @@ def compute_crr_dp(
     top_toks = torch.topk(mask_token_probs, mask_token_probs.shape[1], dim=1)
     top_toks = top_toks.indices[0].tolist()
     top_token = top_toks[0]
-    #top_token_decoded = tokenizer.decode([top_token])
     top_token_score = mask_token_probs[:, top_token].tolist()[0]
-    top_token_rank = 1
     tok_inds = list(range(mask_token_probs.shape[1]))
-    token_js = []
     masked_token_index = tok_inds.index(masked_tok)
-    #masked_token_decoded = tokenizer.decode([masked_tok])
     masked_token_score = mask_token_probs[:, masked_token_index].tolist()[0]
     masked_token_rank = top_toks.index(masked_tok) + 1
     token_j = {
-        #"token": masked_token_decoded,
         "token_id": masked_tok,
         "score": masked_token_score,
         "rank": masked_token_rank
@@ -67,7 +62,6 @@ def compute_crr_dp(
         token_j['dpa'] = dp_attns
     return {
         "prediction": {
-            #"token": top_token_decoded,
             "token_id": top_token,
             "score": top_token_score,
             "rank": 1

@@ -19,8 +19,6 @@ def pretty_print(res, out, m_name, sep="\n", total_only=False):
         for measure in res['bias_scores'].keys():
             out += (f"{measure.replace('d','Δ').upper()} "+
                     f"total = {round(res['bias_scores'][measure]['total'],3)}\n")
-        if len(out) >= 2 and "\n" in out[-2:]:
-            out = out[:-2]
     else:
       for measure in res['bias_scores'].keys():
           out += (f"Measure = {measure.replace('d','Δ').upper()}")
@@ -41,13 +39,13 @@ if __name__ == '__main__':
                               'Provide bias types in "<data>/bias_types.txt" and biased sentences in "<data>/dis.txt" and "<data>/adv.txt" accordingly.'),
                         choices=['cps','ss','custom'])
 
-    parser.add_argument('--model',
+    parser.add_argument('--model_name_or_path',
                         type=str,
                         required=True,
                         help=('Model (MLM) to compute bias measures for. '+
                               'Must be supported by HuggingFace.'))
 
-    parser.add_argument('--model2',
+    parser.add_argument('--model_name_or_path_2',
                         type=str,
                         required=False,
                         default="",
@@ -107,45 +105,45 @@ if __name__ == '__main__':
     output_dir = os.path.dirname(args.output)
 
     out = ""
-    model = args.model
+    model_name_or_path = args.model_name_or_path
     try:
-        model_bias = BiasMLM(args.model, dataset)
+        model_bias = BiasMLM(args.model_name_or_path, dataset)
     except Exception as ex:
-        raise Exception(f"Could not load {args.model}\n{ex}")
+        raise Exception(f"Could not load {args.model_name_or_path}\n{ex}")
     if args.measures == 'all':
         res1 = model_bias.evaluate(inc_attention=True)
     else:
         res1 = model_bias.evaluate(measures=args.measures, inc_attention=True)
-    output_dir_res1 = os.path.join(output_dir, res1['model_name'])
+    output_dir_res1 = os.path.join(output_dir, res1['model_name_or_path'])
     res1.save(output_dir_res1)
-    print(f"Saved bias results for {res1['model_name']} in {output_dir_res1}")
-    out = pretty_print(res1, out, m_name=res1['model_name'])
+    print(f"Saved bias results for {res1['model_name_or_path']} in {output_dir_res1}")
+    out = pretty_print(res1, out, m_name=res1['model_name_or_path'])
 
     res2 = None
-    if args.model2 != "":
-        model = args.model2
-        model_bias = BiasMLM(args.model2, dataset)
+    if args.model_name_or_path_2 != "":
+        model = args.model_name_or_path_2
+        model_bias = BiasMLM(args.model_name_or_path_2, dataset)
         if args.measures == 'all':
             res2 = model_bias.evaluate(inc_attention=True)
         else:
             res2 = model_bias.evaluate(measures=args.measures, inc_attention=True)
-        output_dir_res2 = os.path.join(output_dir, res2['model_name'])
+        output_dir_res2 = os.path.join(output_dir, res2['model_name_or_path'])
         res2.save(output_dir_res2)
-        print(f"Saved bias results for {res2['model_name']} in {output_dir_res2}")
-        out = pretty_print(res2, out, m_name=res2['model_name'])
+        print(f"Saved bias results for {res2['model_name_or_path']} in {output_dir_res2}")
+        out = pretty_print(res2, out, m_name=res2['model_name_or_path'])
 
     if res2 is not None:
         mlm_bias_relative = RelativeBiasMLMs(res1, res2)
         res3 = mlm_bias_relative.evaluate()
-        output_dir_res3 = os.path.join(output_dir, f"{res1['model_name']}_{res2['model_name']}")
+        output_dir_res3 = os.path.join(output_dir, f"{res1['model_name_or_path']}_{res2['model_name_or_path']}")
         res3.save(output_dir_res3)
-        print(f"Saved bias results for {res1['model_name']} relative to {res2['model_name']} in {output_dir_res3}")
-        out = pretty_print(res3, out, m_name=f"Relative {res1['model_name']}, {res2['model_name']}")
+        print(f"Saved bias results for {res1['model_name_or_path']} relative to {res2['model_name_or_path']} in {output_dir_res3}")
+        out = pretty_print(res3, out, m_name=f"Relative {res1['model_name_or_path']}, {res2['model_name_or_path']}")
 
     with open(args.output, 'w+', encoding='utf-8') as f:
         f.write(out)
 
     print(f"Saved scores in {args.output}")
 
-    console_out = pretty_print(res1, "", m_name=res1['model_name'], total_only=True)
+    console_out = pretty_print(res1, "", m_name=res1['model_name_or_path'], total_only=True)
     print(console_out)

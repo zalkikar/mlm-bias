@@ -2,12 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import difflib
-import regex as re
+import re
 
 def get_mask_combinations(sent, tokenizer, skip_space=False, rm_punc=True):
     sent_toks = []
     gt = []
-    mask_ind = 0
     if rm_punc:
         sent = ' '.join(re.sub('[^A-Za-z0-9 _\-]+', '', sent).split())
     sent_enc = tokenizer.encode(sent, add_special_tokens=False)

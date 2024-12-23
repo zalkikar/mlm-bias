@@ -1,5 +1,9 @@
 # Measuring Biases in Masked Language Models for PyTorch Transformers
 
+![pypi - status](https://img.shields.io/badge/status-stable-brightgreen)
+![pypi - downloads](https://img.shields.io/pypi/dm/mlm-bias)
+![pypi - version](https://img.shields.io/pypi/v/mlm-bias)
+
 Evaluate biases in pre-trained or re-trained masked language models (MLMs), such as those available through [HuggingFace](https://huggingface.co/models). This package computes bias scores across various bias types, using benchmark datasets like [CrowS-Pairs (CPS)](https://github.com/nyu-mll/crows-pairs) and [StereoSet (SS)](https://github.com/moinnadeem/StereoSet) (intrasentence), or custom datasets. You can also compare relative bias between two MLMs, or evaluate re-trained MLMs versus their pre-trained base models.
 
 ## Evaluation Methods
@@ -64,18 +68,18 @@ python3 -m pip install .
 Run the `mlm_bias.py` example script:
 
 ```bash
-mlm_bias.py [-h] --data {cps,ss,custom} --model MODEL [--model2 MODEL2] [--output OUTPUT] [--measures {all,crr,crra,dp,dpa,aul,aula,csps,sss}] [--start S] [--end E]
+mlm_bias.py [-h] --data {cps,ss,custom} --model_name_or_path MODEL [--model_name_or_path_2 MODEL2] [--output OUTPUT] [--measures {all,crr,crra,dp,dpa,aul,aula,csps,sss}] [--start S] [--end E]
 ```
 
 Example arguments:
 
 ```bash
 # Single MLM
-python3 mlm_bias.py --data cps --model roberta-base --start 0 --end 30
-python3 mlm_bias.py --data ss --model bert-base-uncased --start 0 --end 30
+python3 mlm_bias.py --data cps --model_name_or_path roberta-base --start 0 --end 30
+python3 mlm_bias.py --data ss --model_name_or_path bert-base-uncased --start 0 --end 30
 
 # Relative between two MLMs
-python3 mlm_bias.py --data cps --model roberta-base --start 0 --end 30 --model2 bert-base-uncased
+python3 mlm_bias.py --data cps --model_name_or_path roberta-base --start 0 --end 30 --model_name_or_path_2 bert-base-uncased
 ```
 
 Output directories (default arguments):
@@ -86,23 +90,27 @@ Output directories (default arguments):
 ### Example Output:
 
 ```bash
+python3 mlm_bias.py --data cps --model_name_or_path bert-base-uncased --start 0 --end 30
+```
+
+```bash
 Created output directory.
 Created Data Directory |██████████████████████████████| 1/1 [100%] in 0s ETA: 0s
 Downloaded Data [CrowSPairs] |██████████████████████████████| 1/1 [100%] in 0s ETA: 0s
 Loaded Data [CrowSPairs] |██████████████████████████████| 1/1 [100%] in 0s ETA: 0s
-Evaluating Bias [roberta-base] |██████████████████████████████| 30/30 [100%] in 2m 46s ETA: 0s
-Saved bias results for roberta-base in ./eval/roberta-base
+Evaluating Bias [bert-base-uncased] |██████████████████████████████| 30/30 [100%] in 1m 4s ETA: 0s
+Saved bias results for bert-base-uncased in ./eval/bert-base-uncased
 Saved scores in ./eval/out.txt
 --------------------------------------------------
-MLM: roberta-base
-CRR total = 50.0
-CRRA total = 53.333
-ΔP total = 56.667
-ΔPA total = 56.667
-AUL total = 76.667
-AULA total = 70.0
-SSS total = 53.333
-CSPS total = 63.33
+MLM: bert-base-uncased
+CRR total = 26.667
+CRRA total = 30.0
+ΔP total = 46.667
+ΔPA total = 43.333
+AUL total = 36.667
+AULA total = 40.0
+SSS total = 30.0
+CSPS total = 33.333
 ```
 
 ## Custom Datasets
