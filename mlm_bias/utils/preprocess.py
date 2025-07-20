@@ -12,9 +12,9 @@ from mlm_bias.utils.constants import BENCHMARK_DATASET_MAP
 def get_benchmarks(dataset, data_dir):
     if dataset not in BENCHMARK_DATASET_MAP.keys():
         raise Exception("Dataset Not Supported")
-    url = BENCHMARK_DATASET_MAP[dataset]['download_url']
-    name = BENCHMARK_DATASET_MAP[dataset]['name']
-    file_name = BENCHMARK_DATASET_MAP[dataset]['file_name']
+    url = BENCHMARK_DATASET_MAP[dataset]["download_url"]
+    name = BENCHMARK_DATASET_MAP[dataset]["name"]
+    file_name = BENCHMARK_DATASET_MAP[dataset]["file_name"]
     file_path = f"{data_dir}/{file_name}"
     data_dir_exists = os.path.exists(data_dir)
     if not data_dir_exists:
@@ -32,22 +32,22 @@ def preprocess_benchmark(dataset, data_dir):
     bias_types = []
     dis = []
     adv = []
-    if dataset == 'cps':
+    if dataset == "cps":
         bdf = pd.read_csv(file_path)
-        bias_types = [vls for vls in bdf['bias_type']]
-        dis = [vls for vls in bdf['sent_more']]
-        adv = [vls for vls in bdf['sent_less']]
-    elif dataset == 'ss':
+        bias_types = [vls for vls in bdf["bias_type"]]
+        dis = [vls for vls in bdf["sent_more"]]
+        adv = [vls for vls in bdf["sent_less"]]
+    elif dataset == "ss":
         with open(file_path, "r") as f:
             bdf = json.load(f)
             f.close()
-        for bdd in bdf["data"]['intrasentence']:
-            for bdds in bdd['sentences']:
-                if bdds['gold_label'] == 'anti-stereotype':
-                    adv.append(bdds['sentence'])
-                elif bdds['gold_label'] == 'stereotype':
-                    dis.append(bdds['sentence'])
-                    bias_types.append(bdd['bias_type'])
+        for bdd in bdf["data"]["intrasentence"]:
+            for bdds in bdd["sentences"]:
+                if bdds["gold_label"] == "anti-stereotype":
+                    adv.append(bdds["sentence"])
+                elif bdds["gold_label"] == "stereotype":
+                    dis.append(bdds["sentence"])
+                    bias_types.append(bdd["bias_type"])
     assert len(bias_types) == len(dis) == len(adv)
     show_progress(1, 1, f"Loaded Data [{name}]", time.time())
     end_progress()
@@ -55,7 +55,7 @@ def preprocess_benchmark(dataset, data_dir):
 
 def preprocess_linebyline(data_dir):
     if not os.access(data_dir, os.R_OK):
-        raise Exception("Can't Access Dataset")
+        raise Exception("No Dataset Access")
     else:
         with open(os.path.join(data_dir, "bias_types.txt"), "r") as f:
             bias_types = f.read().splitlines()

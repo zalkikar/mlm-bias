@@ -45,7 +45,7 @@ class RelativeBiasMLMs():
             m2_s2 = self.mlm2_bias_results.eval(2, m)
             assert len(m1_s1) == len(m2_s2) == len(m1_s2) == len(m2_s1) == len(self.bias_types)
             mdifs = [((m21 - m11) - (m22 - m21)) for m22, m21, m12, m11 in zip(m2_s2, m2_s1, m1_s2, m1_s1)]
-            self.bias_scores[m]['total'] = 100 * np.mean([1 if mdif > 0 else 0 for mdif in mdifs])
+            self.bias_scores[m]["total"] = 100 * np.mean([1 if mdif > 0 else 0 for mdif in mdifs])
             for b in self.unique_biases:
                 m1_s1 = self.mlm1_bias_results.eval(1, m, b)
                 m1_s2 = self.mlm1_bias_results.eval(2, m, b)

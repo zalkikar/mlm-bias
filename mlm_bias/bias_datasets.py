@@ -29,11 +29,11 @@ class BiasDataset():
         self.adv = [self.adv_all[i] for i in indices]
 
 class BiasBenchmarkDataset(BiasDataset):
-    def __init__(self, dataset: str, data_dir: Optional[str] = './data'):
+    def __init__(self, dataset: str, data_dir: Optional[str] = "./data"):
         self.bias_types_all, self.dis_all, self.adv_all = preprocess_benchmark(dataset, data_dir)
         self.reset()
 
 class BiasLineByLineDataset(BiasDataset):
-    def __init__(self, data_dir: Optional[str] = './data'):
+    def __init__(self, data_dir: Optional[str] = "./data"):
         self.bias_types_all, self.dis_all, self.adv_all = preprocess_linebyline(data_dir)
         self.reset()

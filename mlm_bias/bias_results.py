@@ -28,25 +28,25 @@ class BiasResults():
 
     def save(self, file_path: Optional[str] = None):
         if file_path is None:
-            fp = f'{self.model_name_or_path}.bias'
+            fp = f"{self.model_name_or_path}.bias"
         else:
             fp = file_path
-        with open(fp, 'wb') as f:
+        with open(fp, "wb") as f:
             f.write(pickle.dumps(self.__dict__))
             f.close()
 
     def load(self, file_path: Optional[str] = None):
         if file_path is None:
-            fp = f'{self.model_name_or_path}.bias'
+            fp = f"{self.model_name_or_path}.bias"
         else:
             fp = file_path
-        with open(fp, 'rb') as f:
+        with open(fp, "rb") as f:
             data = pickle.load(f)
             f.close()
-        self.model_name_or_path = data['model_name_or_path']
-        self.measures = data['measures']
-        self.eval_results = data['eval_results']
-        self.bias_scores = data['bias_scores']
+        self.model_name_or_path = data["model_name_or_path"]
+        self.measures = data["measures"]
+        self.eval_results = data["eval_results"]
+        self.bias_scores = data["bias_scores"]
 
     def eval(
         self,
@@ -54,11 +54,11 @@ class BiasResults():
         measure: str,
         bias_type: Optional[str] = None
     ):
-        eval_res = self.eval_results[f'S{set_num}'][measure]
+        eval_res = self.eval_results[f"S{set_num}"][measure]
         if bias_type is not None:
             return [
                 v for vi,v in enumerate(eval_res)
-                if self.eval_results['bias_types'][vi] == bias_type
+                if self.eval_results["bias_types"][vi] == bias_type
             ]
         return eval_res
 
@@ -86,22 +86,22 @@ class RelativeBiasResults():
 
     def save(self, file_path: Optional[str] = None):
         if file_path is None:
-            fp = f'{self.model1_name}_{self.model2_name}.bias'
+            fp = f"{self.model1_name}_{self.model2_name}.bias"
         else:
             fp = file_path
-        with open(fp, 'wb') as f:
+        with open(fp, "wb") as f:
             f.write(pickle.dumps(self.__dict__))
             f.close()
 
     def load(self, file_path: Optional[str] = None):
         if file_path is None:
-            fp = f'{self.model1_name}_{self.model2_name}.bias'
+            fp = f"{self.model1_name}_{self.model2_name}.bias"
         else:
             fp = file_path
-        with open(fp, 'rb') as f:
+        with open(fp, "rb") as f:
             data = pickle.load(f)
             f.close()
-        self.model1_name = data['model1_name']
-        self.model2_name = data['model2_name']
-        self.measures = data['measures']
-        self.bias_scores = data['bias_scores']
+        self.model1_name = data["model1_name"]
+        self.model2_name = data["model2_name"]
+        self.measures = data["measures"]
+        self.bias_scores = data["bias_scores"]

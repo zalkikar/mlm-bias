@@ -5,7 +5,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='mlm-bias',
-    version='0.1.6',
+    version='0.1.7',
     author='Rahul Zalkikar',
     author_email='rayzck9@gmail.com',
     description='Bias Evaluation Methods for Masked Language Models implemented in PyTorch',
@@ -16,7 +16,7 @@ setup(
     project_urls={
         'Bug Tracker': 'https://github.com/zalkikar/mlm-bias/issues',
     },
-    python_requires=">=3.8, <3.11",
+    python_requires=">=3.8, <3.13",
     packages=find_packages(),
     install_requires=[
         "transformers>=4.35.0",
@@ -34,5 +34,7 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12"
     ],
 )
