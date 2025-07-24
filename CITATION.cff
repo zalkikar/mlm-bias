@@ -4,7 +4,7 @@ authors:
   - family-names: Zalkikar
     given-names: Rahul
 title: mlm-bias
-version: 0.1.5
+version: 0.1.7
 url: https://github.com/zalkikar/mlm-bias
 preferred-citation:
   authors:
@@ -12,11 +12,15 @@ preferred-citation:
       given-names: Rahul
     - family-names: Chandra
       given-names: Kanchan
+  type: conference-paper
   title: Measuring Social Biases in Masked Language Models by Proxy of Prediction Quality
-  year: 2024
-  version: 2.0
-  doi: 10.48550/arXiv.2402.13954
-  url: https://arxiv.org/abs/2402.13954
-  arxiv: 2402.13954
-  eprint: 2402.13954
-  primary-class: cs.CL
+  date-published: 2025-07
+  conference:
+    name: "Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)"
+    location: "Vienna, Austria"
+  publisher:
+    name: "Association for Computational Linguistics"
+  url: "https://aclanthology.org/2025.acl-long.68/"
+  start: 1337
+  end: 1361
+  isbn: "979-8-89176-251-0"
