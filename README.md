@@ -159,14 +159,23 @@ Compute bias scores for a custom dataset directory with the following line-by-li
 If using this for research, please cite the following:
 
 ```bibtex
-@misc{zalkikar2024measuringsocialbiasesmasked,
-      title={Measuring Social Biases in Masked Language Models by Proxy of Prediction Quality},
-      author={Rahul Zalkikar and Kanchan Chandra},
-      year={2024},
-      eprint={2402.13954},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL},
-      url={https://arxiv.org/abs/2402.13954}
+@inproceedings{zalkikar-chandra-2025-measuring,
+    title = "Measuring Social Biases in Masked Language Models by Proxy of Prediction Quality",
+    author = "Zalkikar, Rahul  and
+      Chandra, Kanchan",
+    editor = "Che, Wanxiang  and
+      Nabende, Joyce  and
+      Shutova, Ekaterina  and
+      Pilehvar, Mohammad Taher",
+    booktitle = "Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    month = jul,
+    year = "2025",
+    address = "Vienna, Austria",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2025.acl-long.68/",
+    pages = "1337--1361",
+    ISBN = "979-8-89176-251-0",
+    abstract = "Innovative transformer-based language models produce contextually-aware token embeddings and have achieved state-of-the-art performance for a variety of natural language tasks, but have been shown to encode unwanted biases for downstream applications. In this paper, we evaluate the social biases encoded by transformers trained with the masked language modeling objective using proposed proxy functions within an iterative masking experiment to measure the quality of transformer models' predictions and assess the preference of MLMs towards disadvantaged and advantaged groups. We find that all models encode concerning social biases. We compare bias estimations with those produced by other evaluation methods using benchmark datasets and assess their alignment with human annotated biases. We extend previous work by evaluating social biases introduced after retraining an MLM under the masked language modeling objective and find proposed measures produce more accurate and sensitive estimations of biases based on relative preference for biased sentences between models, while other methods tend to underestimate biases after retraining on sentences biased towards disadvantaged groups."
 }
 ```
 
