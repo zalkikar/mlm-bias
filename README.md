@@ -174,8 +174,7 @@ If using this for research, please cite the following:
     publisher = "Association for Computational Linguistics",
     url = "https://aclanthology.org/2025.acl-long.68/",
     pages = "1337--1361",
-    ISBN = "979-8-89176-251-0",
-    abstract = "Innovative transformer-based language models produce contextually-aware token embeddings and have achieved state-of-the-art performance for a variety of natural language tasks, but have been shown to encode unwanted biases for downstream applications. In this paper, we evaluate the social biases encoded by transformers trained with the masked language modeling objective using proposed proxy functions within an iterative masking experiment to measure the quality of transformer models' predictions and assess the preference of MLMs towards disadvantaged and advantaged groups. We find that all models encode concerning social biases. We compare bias estimations with those produced by other evaluation methods using benchmark datasets and assess their alignment with human annotated biases. We extend previous work by evaluating social biases introduced after retraining an MLM under the masked language modeling objective and find proposed measures produce more accurate and sensitive estimations of biases based on relative preference for biased sentences between models, while other methods tend to underestimate biases after retraining on sentences biased towards disadvantaged groups."
+    ISBN = "979-8-89176-251-0"
 }
 ```
 
